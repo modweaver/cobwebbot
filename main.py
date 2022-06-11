@@ -17,8 +17,8 @@ class MyClient(discord.Client):
         if message.content.startswith('!tag'):
             tag_to_find = message.content.split(' ')[1]
             channel = self.get_channel(985136865789218866)
-            messages = await channel.history(limit=200)
-            for message in messages:
+            #messages = await channel.history(limit=200)
+            async for message in channel.history(limit=200):
                 if message.content.startswith("id: " + tag_to_find):
                     out = message.content.split('\n')[1].split(' ')[1]
                     await message.channel.send(out)

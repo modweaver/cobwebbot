@@ -18,12 +18,18 @@ class MyClient(discord.Client):
             out = ""
             original_channel = message.channel
             tag_to_find = message.content.split(' ')[1]
+
+
             channel = self.get_channel(985136865789218866)
             #messages = await channel.history(limit=200)
             async for message in channel.history(limit=200):
                 if message.content.startswith("id: " + tag_to_find):
                     out = message.content.split('\n')[1].split('out: ')[1]
                     break
+                if tag_to_find == "list":
+                    out = message.content.split('\n')[1]
+                    break
+                
             if not out == None and not out == "":
                 await original_channel.send(f"{out}")
             else:

@@ -29,8 +29,7 @@ class MyClient(discord.Client):
                 if tag_to_find == "list":
                     if message.content.startswith("id: "):
                         out = "ignore_out"
-                        await original_channel.send(message.content.split('\n')[1].split('out: ')[1])
-                    break
+                        await original_channel.send(message.content.split('\n')[0].split('id: ')[1])
                 
             if not out == None and not out == "" and not out == "ignore_out":
                 await original_channel.send(f"{out}")

@@ -15,6 +15,7 @@ class MyClient(discord.Client):
         message_id = message.id
         channel_id = message.channel.id
         if message.content.startswith('!tag'):
+            original_channel = message.channel
             tag_to_find = message.content.split(' ')[1]
             channel = self.get_channel(985136865789218866)
             #messages = await channel.history(limit=200)
@@ -23,9 +24,9 @@ class MyClient(discord.Client):
                     out = message.content.split('\n')[1].split(' ')[1]
                     break
             if not out == None and not out == "":
-                await message.channel.send(f"{out}")
+                await original_channel.send(f"{out}")
             else:
-                await message.channel.send(f"No tag found for {tag_to_find}")
+                await original_channel.send(f"No tag found for {tag_to_find}")
         if message.channel.id == 980789224217403422:
             if not message.content.startswith('Title:'):
                 await message.delete()

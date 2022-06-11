@@ -27,7 +27,7 @@ class MyClient(discord.Client):
             if not out == None and not out == "":
                 await original_channel.send(f"{out}")
             else:
-                await original_channel.send(f"No tag found for {tag_to_find}")
+                await original_channel.send(f"Tag {tag_to_find} not found!")
         if message.channel.id == 980789224217403422:
             if not message.content.startswith('Title:'):
                 await message.delete()

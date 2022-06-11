@@ -32,4 +32,5 @@ intents.message_content = True
 
 client = MyClient(intents=intents)
 token = os.environ.get("WEBCRAWLER_TOKEN")
+print(token)
 client.run(token)

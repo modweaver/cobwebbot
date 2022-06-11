@@ -22,7 +22,7 @@ class MyClient(discord.Client):
             #messages = await channel.history(limit=200)
             async for message in channel.history(limit=200):
                 if message.content.startswith("id: " + tag_to_find):
-                    out = message.content.split('\n')[1].split(' ')[1]
+                    out = message.content.split('\n')[1].split('out: ')[1]
                     break
             if not out == None and not out == "":
                 await original_channel.send(f"{out}")

@@ -15,6 +15,7 @@ class MyClient(discord.Client):
         message_id = message.id
         channel_id = message.channel.id
         if message.content.startswith('!tag'):
+            out = ""
             original_channel = message.channel
             tag_to_find = message.content.split(' ')[1]
             channel = self.get_channel(985136865789218866)

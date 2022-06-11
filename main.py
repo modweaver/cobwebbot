@@ -14,7 +14,15 @@ class MyClient(discord.Client):
         #    print(f'Message `{message.content}` from `{message.author}` in {message.channel.id} was not in the correct channel!')
         message_id = message.id
         channel_id = message.channel.id
-        
+        if message.content.startswith('!tag'):
+            tag_to_find = message.content.split(' ')[1]
+            channel = self.get_channel(985136865789218866)
+            messages = await channel.history(limit=200).flatten()
+            for message in messages:
+                if message.content.startswith("id: " + tag_to_find):
+                    out = message.content.split('\n')[1].split(' ')[1]
+                    await message.channel.send(out)
+                    break    
         if message.channel.id == 980789224217403422:
             if not message.content.startswith('Title:'):
                 await message.delete()
@@ -28,6 +36,10 @@ class MyClient(discord.Client):
             if not message.content.startswith('id: '):
                 await message.delete()
                 await message.author.send(f'Tag format: \n id: <id> \n out: <out>')
+            else:
+                id = message.content.split('id: ')[1].split('\n')[0]
+                out = message.content.split('out: ')[1].split('\n')[0]
+
     async def on_member_join(self, member):
         channel = self.get_channel(952598947069841480)
         await channel.send(f'Welcome {member.mention}! Please read the <#952600261023649802> and have fun!')

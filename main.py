@@ -27,7 +27,8 @@ class MyClient(discord.Client):
                     out = message.content.split('\n')[1].split('out: ')[1]
                     break
                 if tag_to_find == "list":
-                    out = message.content.split('\n')[1]
+                    if message.content.startswith("id: "):
+                        out += message.content.split('\n')[0].split('id: ')[1] + "\n"
                     break
                 
             if not out == None and not out == "":

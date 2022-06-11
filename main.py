@@ -28,11 +28,14 @@ class MyClient(discord.Client):
                     break
                 if tag_to_find == "list":
                     if message.content.startswith("id: "):
-                        out += message.content.split('\n')[0].split('id: ')[1] + "\n"
+                        out = "ignore_out"
+                        await original_channel.send(message.content.split('\n')[1].split('out: ')[1])
                     break
                 
-            if not out == None and not out == "":
+            if not out == None and not out == "" and not out == "ignore_out":
                 await original_channel.send(f"{out}")
+            elif out == "ignore_out":
+                pass
             else:
                 await original_channel.send(f"Tag {tag_to_find} not found!")
         if message.channel.id == 980789224217403422:

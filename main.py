@@ -38,6 +38,17 @@ class MyClient(discord.Client):
                 pass
             else:
                 await original_channel.send(f"Tag {tag_to_find} not found!")
+        if message.content.startswith('!kick'):
+            if message.author.guild_permissions.kick_members:
+                member = message.mentions[0]
+                reason = message.content.split('reason="')[1].split('"')[0]
+                embed_description = f"You have been kicked from {member.guild.name} \n Reason: {reason} \n You may join the server with a new invite link. \n Moderator: {message.author.name}"
+                kick_embed = discord.Embed(title="Kicked!", description=embed_description, color=0xFF9900)
+                
+                await member.send(f"You have been kicked from {message.guild.name} for reason: {message.content.split(' ')[2]}")
+                await member.kick()
+                await message.channel.send(f'Kicked {member.mention}')
+                
         if message.channel.id == 980789224217403422:
             if not message.content.startswith('Title:'):
                 await message.delete()

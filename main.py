@@ -71,7 +71,7 @@ class MyClient(discord.Client):
                     if len(id_to_try) == 18:
                         member = message.guild.get_member(id_to_try)
                         if member is None:
-                            member = client.fetch_user(id_to_try)
+                            member = await client.fetch_user(id_to_try)
                         print(member.name)
                     else:
                         await message.channel.send("Please mention a member to ban!")

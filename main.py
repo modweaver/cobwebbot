@@ -1,5 +1,8 @@
+import asyncio
+from multiprocessing.connection import wait
 import discord
 import os
+import time
 class MyClient(discord.Client):
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
@@ -40,14 +43,57 @@ class MyClient(discord.Client):
                 await original_channel.send(f"Tag {tag_to_find} not found!")
         if message.content.startswith('!kick'):
             if message.author.guild_permissions.kick_members:
-                member = message.mentions[0]
-                reason = message.content.split('reason="')[1].split('"')[0]
-                embed_description = f"You have been kicked from {member.guild.name} \n Reason: {reason} \n You may join the server with a new invite link. \n Moderator: {message.author.name}"
+                try:
+                    member = message.mentions[0]
+                except IndexError:
+                    await message.channel.send("Please mention a member to kick!")
+                    return
+                try:
+                    reason = message.content.split('reason="')[1].split('"')[0]
+                except IndexError:
+                    await message.channel.send("Please provide a reason for the kick!")
+                    return
+                embed_description = f"You have been kicked from {member.guild.name} \n \n Reason: {reason} \n \n You may join the server with a new invite link. \n \n Moderator: {message.author.name}"
                 kick_embed = discord.Embed(title="Kicked!", description=embed_description, color=0xFF9900)
                 
-                await member.send(f"You have been kicked from {message.guild.name} for reason: {message.content.split(' ')[2]}")
+                await member.send(embed=kick_embed)
                 await member.kick()
-                await message.channel.send(f'Kicked {member.mention}')
+                message_sent = await message.channel.send(f'Kicked {member.mention}')
+                await asyncio.sleep(5)
+                await message_sent.delete()
+                await message.delete()
+        if message.content.startswith('!ban'):
+            if message.author.guild_permissions.ban_members:
+                try:
+                    member = message.mentions[0]
+                except IndexError:
+                    await message.channel.send("Please mention a member to ban!")
+                    return
+                try:
+                    reason = message.content.split('reason="')[1].split('"')[0]
+                except IndexError:
+                    await message.channel.send("Please provide a reason for the ban!")
+                    return
+                embed_description = f"You have been banned from {member.guild.name} \n \n Reason: {reason} \n \n You may join the server with a new invite link. \n \n Moderator: {message.author.name}"
+                ban_embed = discord.Embed(title="Banned!", description=embed_description, color=0xFF0000)
+                await member.send(embed=ban_embed)
+                await member.ban()
+                message_sent = await message.channel.send(f'Banned {member.mention}')
+                await asyncio.sleep(5)
+                await message_sent.delete()
+                await message.delete()
+        if message.content.startswith('!clear') or message.content.startswith('!purge'):
+            if message.author.guild_permissions.manage_messages:
+                try:
+                    amount = int(message.content.split(' ')[1]) + 1
+                except IndexError:
+                    await message.channel.send("Please provide an amount of messages to delete!")
+                    return
+                await message.channel.purge(limit=amount)
+                message_sent = await message.channel.send(f'Cleared {amount - 1} messages!')
+                await asyncio.sleep(5)
+                await message_sent.delete()
+                await message.delete()
                 
         if message.channel.id == 980789224217403422:
             if not message.content.startswith('Title:'):

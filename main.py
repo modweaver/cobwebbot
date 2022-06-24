@@ -69,7 +69,9 @@ class MyClient(discord.Client):
                 except IndexError:
                     id_to_try = message.content.split("!ban ")[1].split(" reason")[0]
                     if len(id_to_try) == 18:
-                        member = id_to_try
+                        member = message.guild.get_member(id_to_try)
+                        if member is None:
+                            await message.channel.send("Member is None!")
                     else:
                         await message.channel.send("Please mention a member to ban!")
                     return
@@ -81,10 +83,7 @@ class MyClient(discord.Client):
                 embed_description = f"You have been banned from {member.guild.name} \n \n Reason: {reason} \n \n You may join the server with a new invite link. \n \n Moderator: {message.author.name}"
                 ban_embed = discord.Embed(title="Banned!", description=embed_description, color=0xFF0000)
                 await member.send(embed=ban_embed)
-                if len(member) == 18:
-                    await message.guild.ban(member)
-                else:
-                    await member.ban()
+                await member.ban()
                 message_sent = await message.channel.send(f'Banned {member.mention}')
                 await asyncio.sleep(5)
                 await message_sent.delete()

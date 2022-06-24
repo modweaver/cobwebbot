@@ -69,7 +69,7 @@ class MyClient(discord.Client):
                 except IndexError:
                     id_to_try = message.content.split("!ban ")[1].split(" reason")[0]
                     if len(id_to_try) == 18:
-                        member = id_to_try
+                        member = message.guild.get_member(id_to_try)
                     else:
                         await message.channel.send("Please mention a member to ban!")
                     return

@@ -32,7 +32,8 @@ namespace CobwebBot.Commands
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx)
         {
-            string EmbedDescription = @"
+            string EmbedDescription = 
+            @"
             `help`
             Shows this page.
 

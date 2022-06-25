@@ -11,7 +11,7 @@ namespace CobwebBot.Handlers
 {
     internal class InteractionHandler
     {
-        public async static void Handle(DiscordClient s, ComponentInteractionCreateEventArgs e) 
+        public async static void Handle(DiscordClient s, ComponentInteractionCreateEventArgs e)
         {
             await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
             var user = e.User;

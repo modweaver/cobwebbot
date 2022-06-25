@@ -63,9 +63,10 @@ namespace CobwebBot
                 }
             };
 
-            discord.ComponentInteractionCreated += async (s, e) =>
+            discord.ComponentInteractionCreated += (s, e) =>
             {
                 InteractionHandler.Handle(s, e);
+                return Task.CompletedTask;
             };
             commands.RegisterCommands<Commands.Utilities>();
             commands.RegisterCommands<Commands.Moderation>();

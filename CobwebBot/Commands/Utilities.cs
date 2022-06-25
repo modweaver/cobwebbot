@@ -62,7 +62,7 @@ namespace CobwebBot.Commands
         [Command("csre")]
         public async Task RoleEmbedCommand(CommandContext ctx)
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageGuild)) 
+            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageGuild))
             {
                 await ctx.Message.DeleteAsync();
             }

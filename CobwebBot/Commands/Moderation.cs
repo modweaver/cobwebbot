@@ -12,7 +12,7 @@ namespace CobwebBot.Commands
         {
             if (!ctx.Member.Permissions.HasPermission(Permissions.BanMembers))
             {
-                await ctx.Message.RespondAsync("You do not have permission to ban this user."); 
+                await ctx.Message.RespondAsync("You do not have permission to ban this user.");
                 return;
             }
             string EmbedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
@@ -36,8 +36,8 @@ namespace CobwebBot.Commands
             await member.RemoveAsync(reason);
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
-        
-        [Command("mute")]   
+
+        [Command("mute")]
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
         {
             if (!ctx.Member.Permissions.HasPermission(Permissions.ModerateMembers))

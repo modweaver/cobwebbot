@@ -149,6 +149,11 @@ namespace CobwebBot.Commands
         [Command("purge")]
         public async Task PurgeCommand(CommandContext ctx, DiscordMember memberMessagesToPurge, int amountToDelete)
         {
+            if (memberMessagesToPurge == null)
+            {
+                await ctx.RespondAsync("Invalid User.");
+                return;
+            }
             if (!ctx.Member!.Permissions.HasPermission(Permissions.ManageMessages))
             {
                 await ctx.RespondAsync("You must have permissions to manage messages.");

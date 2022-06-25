@@ -18,4 +18,8 @@
       <Folder Include="Utils" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="bin\Debug\net6.0\config.json" />
+    </ItemGroup>
+
 </Project>

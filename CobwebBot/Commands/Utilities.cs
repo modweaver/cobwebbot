@@ -32,7 +32,29 @@ namespace CobwebBot.Commands
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx) 
         {
-            string EmbedDescription = "`help` \n Shows this page. \n \n `avatar` \n Gets the avatar for a user. \n Syntax: avatar [user] \n \n `kick` (Admin Only) \n Kicks a member. \n Syntax: kick <user> \"<reason>\" \n \n `ban` (Admin Only) \n Bans a member. \n Syntax: ban <user> \"<reason>\" \n \n `mute` (Admin Only) \n Mutes a user. \n Syntax: mute <user> <duration> \"<reason>\" \n For duration, the following values are valid: \n <number>h: Hours \n <number>m: Minutes \n <number>s: Seconds"
+            string EmbedDescription = @"
+            `help`
+            Shows this page.
+
+            `avatar` 
+            Gets the avatar for a user. 
+            Syntax: avatar [user]
+    
+            `kick` (Admin Only) 
+            Kicks a member. 
+            Syntax: kick <user> ""<reason>""
+    
+            `ban` (Admin Only) 
+            Bans a member. 
+            Syntax: ban <user> ""<reason>""
+    
+            `mute` (Admin Only) 
+            Mutes a user. 
+            Syntax: mute <user> <duration> ""<reason>"" 
+            For duration, the following values are valid: 
+            <number>h: Hours 
+            <number>m: Minutes 
+            <number>s: Seconds";
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands").WithColor(DiscordColor.Green);
             await ctx.RespondAsync(Embed);
         }

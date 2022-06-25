@@ -26,84 +26,68 @@ namespace CobwebBot.Commands
             await member.RemoveAsync(reason);
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
-
+        
         [Command("mute")]   
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
         {
-            string oduration = duration;
-            string thing = "";
-            bool hours = false;
-            bool minutes = false;
-            bool seconds = false;
+            var tDuration = duration;
+            string durationPrefix = "";
+            bool isHours = false, isMinutes = false, isSeconds = false;
             if (duration.EndsWith("h"))
             {
-                hours = true;
+                isHours = true;
                 duration = duration.Split("h")[0];
                 if (duration.Equals("1h"))
                 {
-                    thing = "hour";
+                    durationPrefix = "hour";
                 }
                 else
                 {
-                    thing = "hours";
+                    durationPrefix = "hours";
                 }
             }
             else if (duration.EndsWith("m"))
             {
-                minutes = true;
+                isMinutes = true;
                 duration = duration.Split("m")[0];
-                if (duration.Equals("1m"))
-                {
-                    thing = "minute";
-                }
-                else
-                {
-                    thing = "minutes";
-                }
+                durationPrefix = duration.Equals("1m") ? "minute" : "minutes";
             }
             else if (duration.EndsWith("s"))
             {
-                seconds = true;
+                isSeconds = true;
                 duration = duration.Split("s")[0];
-                if (duration.Equals("1s"))
-                {
-                    thing = "second";
-                }
-                else
-                {
-                    thing = "seconds";
-                }
+                durationPrefix = duration.Equals("1s") ? "second" : "seconds";
             }
             else
             {
                 await ctx.RespondAsync("Invalid duration! See !help for more info!");
                 return;
             }
-            string EmbedDescription = "You have been muted in " + ctx.Guild.Name + "\n \n Reason: " + reason + "\n \n Duration: " + duration + " " + thing;
+            string EmbedDescription = "You have been muted in " + ctx.Guild.Name + "\n \n Reason: " + reason + "\n \n Duration: " + duration + " " + durationPrefix;
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Muted!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Yellow);
             DateTimeOffset time = new DateTimeOffset(DateTime.Now.AddMinutes(5));
-            if (hours)
+            if (isHours)
             {
                 time = new DateTimeOffset(DateTime.Now.AddHours(double.Parse(duration, System.Globalization.CultureInfo.InvariantCulture)));
 
             }
-            else if (minutes)
+            else if (isMinutes)
             {
                 time = new DateTimeOffset(DateTime.Now.AddMinutes(double.Parse(duration, System.Globalization.CultureInfo.InvariantCulture)));
             }
-            else if (seconds)
+            else if (isSeconds)
             {
                 time = new DateTimeOffset(DateTime.Now.AddSeconds(double.Parse(duration, System.Globalization.CultureInfo.InvariantCulture)));
             }
             else
             {
-                oduration = "5m";
+                tDuration = "5m";
                 time = new DateTimeOffset(DateTime.Now.AddMinutes(5));
             }
 
             await member.SendMessageAsync(Embed);
             await member.TimeoutAsync(time, reason);
-            await ctx.Message.RespondAsync("Muted " + member.Mention + " for " + duration + " " + thing + "!");
+            await ctx.Message.RespondAsync("Muted " + member.Mention + " for " + duration + " " + durationPrefix + "!");
         }
     }
 }

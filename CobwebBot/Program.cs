@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
+using System.Reflection;
 using System.Text;
+using CobwebBot.Commands;
 using dotenv.net;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -10,6 +12,8 @@ namespace CobwebBot
 {
     class Program
     {
+        private static bool devMode = true;
+        private static string _buildLoc = Path.Combine(Directory.GetCurrentDirectory() + "./bin/Debug/net6.0/");
         private static string token;
         static void Main(string[] args)
         {
@@ -26,6 +30,7 @@ namespace CobwebBot
             
             var cfgjson = JsonConvert.DeserializeObject<ConfigJson>(json);
             
+            
             var discord = new DiscordClient(new DiscordConfiguration()
             {
                 Token = cfgjson.TOKEN,
@@ -35,6 +40,15 @@ namespace CobwebBot
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
             
+            var commands = discord.UseCommandsNext(new CommandsNextConfiguration
+            {
+                CaseSensitive = false,
+                EnableDefaultHelp = false,
+                EnableMentionPrefix = true,
+                StringPrefixes = new [] { cfgjson.PREFIX }
+            } );
+
+           
             discord.MessageCreated += async (s, e) =>
             {
                 if (e.Message.Content.ToLower().StartsWith("ping"))
@@ -42,7 +56,7 @@ namespace CobwebBot
                     await e.Message.RespondAsync("pong!");
                 }
             };
-
+            commands.RegisterCommands<Commands.Utilities>();
             await discord.ConnectAsync();
             await Task.Delay(-1);
         }

@@ -27,7 +27,7 @@ namespace CobwebBot.Commands
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
 
-        [Command("mute")]
+        [Command("mute")]   
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
         {
             string oduration = duration;

@@ -14,6 +14,7 @@ namespace CobwebBot
 {
     class Program
     {
+        public static DefaultLogger Logger;
         private static bool devMode = true;
         private static string _buildLoc = Path.Combine(Directory.GetCurrentDirectory() + "./bin/Debug/net6.0/");
         private static string? token;
@@ -41,6 +42,7 @@ namespace CobwebBot
                 MinimumLogLevel = LogLevel.Debug,
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
+            
 
             var commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {

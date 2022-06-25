@@ -7,6 +7,12 @@ namespace CobwebBot.Commands
 {
     public class Moderation : BaseCommandModule
     {
+        #region VARIABLES
+
+        #endregion
+        #region COMMANDS
+        
+        #region BAN COMMAND
         [Command("ban")]
         public async Task BanCommand(CommandContext ctx, DiscordMember member, string reason)
         {
@@ -21,7 +27,9 @@ namespace CobwebBot.Commands
             await member.BanAsync(0, reason);
             await ctx.RespondAsync("Banned user " + member.Mention);
         }
-
+        #endregion
+        
+        #region KICK COMMAND
         [Command("kick")]
         public async Task KickCommand(CommandContext ctx, DiscordMember member, string reason)
         {
@@ -36,7 +44,9 @@ namespace CobwebBot.Commands
             await member.RemoveAsync(reason);
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
-
+        #endregion
+        
+        #region MUTE COMMAND
         [Command("mute")]
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
         {
@@ -104,6 +114,69 @@ namespace CobwebBot.Commands
             await member.TimeoutAsync(time, reason);
             await ctx.Message.RespondAsync("Muted " + member.Mention + " for " + duration + " " + durationSuffix + "!");
         }
+        
+        #endregion
+        
+        #region PURGE COMMAND
+
+        [Command("purge"), Aliases("clear")]
+        public async Task PurgeCommand(CommandContext ctx, int amountToDelete)
+        {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageMessages))
+            {
+                await ctx.RespondAsync("You must have permissions to manage messages.");
+                return;
+            }
+            switch (amountToDelete)
+            {
+                case <= 0:
+                    await ctx.RespondAsync("You must provide an amount of messages to clear");
+                    return;
+                case >= 101:
+                    await ctx.RespondAsync("Amount to delete cannot be greater than 100");
+                    return;
+            }
+
+            var messagesToDelete = await ctx.Channel.GetMessagesAsync(limit: amountToDelete);
+            Console.WriteLine($"[CobwebBot] Deleting {amountToDelete} messages from {ctx.Channel}, Command run by {ctx.Message.Author} | {ctx.Message.Author.Id}");
+            await ctx.Channel.DeleteMessagesAsync(messagesToDelete);
+        }
+        [Command("purge")]
+        public async Task PurgeCommand(CommandContext ctx, DiscordMember memberMessagesToPurge, int amountToDelete)
+        {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageMessages))
+            {
+                await ctx.RespondAsync("You must have permissions to manage messages.");
+                return;
+            }
+
+            if (ctx.Message.Author == memberMessagesToPurge)
+                amountToDelete += 1;
+            switch (amountToDelete)
+            {
+                case <= 0:
+                    await ctx.RespondAsync("You must provide an amount of messages to clear");
+                    return;
+                case >= 101:
+                    await ctx.RespondAsync("Amount to delete cannot be greater than 100");
+                    return;
+            }
+
+            var messagesGot = await ctx.Channel.GetMessagesAsync(limit: amountToDelete);
+            IReadOnlyList<DiscordMessage> messagesToDelete = null;
+            foreach (var msg in messagesGot)
+            {
+                if (msg.Author == memberMessagesToPurge)
+                    messagesToDelete.Append(msg);
+            }
+
+            await ctx.Channel.DeleteMessagesAsync(messagesToDelete);
+            Console.WriteLine($"[CobwebBot] Deleting {amountToDelete} messages from {ctx.Channel}, Command run by {ctx.Message.Author} | {ctx.Message.Author.Id}");
+        }
+
+        #endregion
+        
+        #endregion
     }
 }
 

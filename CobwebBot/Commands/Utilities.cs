@@ -32,7 +32,8 @@ namespace CobwebBot.Commands
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx)
         {
-            string EmbedDescription = @"
+            string EmbedDescription = 
+            @"
             `help`
             Shows this page.
 
@@ -54,7 +55,12 @@ namespace CobwebBot.Commands
             For duration, the following values are valid: 
             <number>h: Hours 
             <number>m: Minutes 
-            <number>s: Seconds";
+            <number>s: Seconds
+            
+            `purge`/`clear` (Admin Only)
+            Clear messages.
+            Syntax: purge/clear [user] <amount of messages>
+            ";
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands").WithColor(DiscordColor.Green);
             await ctx.RespondAsync(Embed);
         }

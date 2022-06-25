@@ -4,7 +4,7 @@ namespace CobwebBot.Commands
 {
     public class Moderation : BaseCommandModule
     {
-    
+        
     }
 }
 

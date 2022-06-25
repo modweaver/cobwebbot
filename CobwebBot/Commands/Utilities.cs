@@ -9,6 +9,7 @@ namespace CobwebBot.Commands
         [Command("greet")]
         public async Task GreetCommand(CommandContext ctx)
         {
+            
             await ctx.RespondAsync("Greetings! I am Cobweb Bot");
         }
     }

@@ -14,12 +14,12 @@ namespace CobwebBot.Commands
             await ctx.RespondAsync("Greetings! I am Cobweb Bot");
         }
 
-        [Command("avatar"), 
+        [Command("avatar"),
          Description("Displays the avatar of the command runner or user mentioned with this command")]
         public async Task AvatarCommand(CommandContext ctx, DiscordMember mentionedUser)
         {
             await ctx.RespondAsync(mentionedUser != null
-                ? mentionedUser.GetGuildAvatarUrl(ImageFormat.Auto, 512) 
+                ? mentionedUser.GetGuildAvatarUrl(ImageFormat.Auto, 512)
                 : ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
 

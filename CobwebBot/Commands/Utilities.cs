@@ -30,7 +30,7 @@ namespace CobwebBot.Commands
             await ctx.RespondAsync(ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
         [Command("help"), Description("Shows a help page")]
-        public async Task HelpCommand(CommandContext ctx) 
+        public async Task HelpCommand(CommandContext ctx)
         {
             string EmbedDescription = @"
             `help`
@@ -46,7 +46,7 @@ namespace CobwebBot.Commands
     
             `ban` (Admin Only) 
             Bans a member. 
-            Syntax: ban <user> ""<reason>""
+            Syntax: ban <user> ""<reason>"" 
     
             `mute` (Admin Only) 
             Mutes a user. 
@@ -57,6 +57,37 @@ namespace CobwebBot.Commands
             <number>s: Seconds";
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands").WithColor(DiscordColor.Green);
             await ctx.RespondAsync(Embed);
+        }
+
+        [Command("csre")]
+        public async Task RoleEmbedCommand(CommandContext ctx)
+        {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageGuild)) 
+            {
+                await ctx.Message.DeleteAsync();
+            }
+            string EmbedDescription = @"
+            ModWeaver:
+            Shows the channels for ModWeaver
+
+            CobwebAPI:
+            Shows the channels for CobwebAPI
+            
+            CWLauncher:
+            Shows the channels for CWLauncher
+            
+            Webcrawler:
+            Shows the channels for Webcrawler
+            ";
+            var embed = new DiscordEmbedBuilder().WithTitle("Roles: Show categories").WithDescription(EmbedDescription);
+            var builder = new DiscordMessageBuilder().WithEmbed(embed).AddComponents(new DiscordComponent[]
+            {
+                new DiscordButtonComponent(ButtonStyle.Primary, "modweaver_role_give", "ModWeaver"),
+                new DiscordButtonComponent(ButtonStyle.Primary, "cobwebapi_role_give", "CobwebAPI"),
+                new DiscordButtonComponent(ButtonStyle.Primary, "cwlauncher_role_give", "CWLauncher"),
+                new DiscordButtonComponent(ButtonStyle.Primary, "webcrawler_role_give", "Webcrawler")
+            });
+            await builder.SendAsync(ctx.Message.Channel);
         }
     }
 }

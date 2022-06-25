@@ -10,6 +10,11 @@ namespace CobwebBot.Commands
         [Command("ban")]
         public async Task BanCommand(CommandContext ctx, DiscordMember member, string reason)
         {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.BanMembers))
+            {
+                await ctx.Message.RespondAsync("You do not have permission to ban this user."); 
+                return;
+            }
             string EmbedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Banned!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Red);
             await member.SendMessageAsync(Embed);
@@ -20,6 +25,11 @@ namespace CobwebBot.Commands
         [Command("kick")]
         public async Task KickCommand(CommandContext ctx, DiscordMember member, string reason)
         {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.KickMembers))
+            {
+                await ctx.Message.RespondAsync("You do not have permission to kick this user.");
+                return;
+            }
             string EmbedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Kicked!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Orange);
             await member.SendMessageAsync(Embed);
@@ -30,6 +40,11 @@ namespace CobwebBot.Commands
         [Command("mute")]   
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
         {
+            if (!ctx.Member.Permissions.HasPermission(Permissions.ModerateMembers))
+            {
+                await ctx.Message.RespondAsync("You do not have permission to mute this user.");
+                return;
+            }
             var tDuration = duration;
             string durationSuffix = "";
             bool isHours = false, isMinutes = false, isSeconds = false;

@@ -14,16 +14,19 @@ namespace CobwebBot.Commands
         
         #region BAN COMMAND
         [Command("ban")]
+        // ReSharper disable once UnusedMember.Global
+#pragma warning disable CA1822
         public async Task BanCommand(CommandContext ctx, DiscordMember member, string reason)
+#pragma warning restore CA1822
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.BanMembers))
+            if (!ctx.Member!.Permissions.HasPermission(Permissions.BanMembers))
             {
                 await ctx.Message.RespondAsync("You do not have permission to ban this user.");
                 return;
             }
-            string EmbedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
-            DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Banned!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Red);
-            await member.SendMessageAsync(Embed);
+            string embedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
+            DiscordEmbed embed = new DiscordEmbedBuilder().WithTitle("Banned!").WithDescription(embedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Red);
+            await member.SendMessageAsync(embed);
             await member.BanAsync(0, reason);
             await ctx.RespondAsync("Banned user " + member.Mention);
         }
@@ -31,16 +34,19 @@ namespace CobwebBot.Commands
         
         #region KICK COMMAND
         [Command("kick")]
+        // ReSharper disable once UnusedMember.Global
+#pragma warning disable CA1822
         public async Task KickCommand(CommandContext ctx, DiscordMember member, string reason)
+#pragma warning restore CA1822
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.KickMembers))
+            if (!ctx.Member!.Permissions.HasPermission(Permissions.KickMembers))
             {
                 await ctx.Message.RespondAsync("You do not have permission to kick this user.");
                 return;
             }
-            string EmbedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
-            DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Kicked!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Orange);
-            await member.SendMessageAsync(Embed);
+            string embedDescription = "You have been banned from " + ctx.Guild.Name + "\n \n Reason: " + reason;
+            DiscordEmbed embed = new DiscordEmbedBuilder().WithTitle("Kicked!").WithDescription(embedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Orange);
+            await member.SendMessageAsync(embed);
             await member.RemoveAsync(reason);
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
@@ -48,28 +54,25 @@ namespace CobwebBot.Commands
         
         #region MUTE COMMAND
         [Command("mute")]
+        // ReSharper disable once UnusedMember.Global
+#pragma warning disable CA1822
         public async Task MuteCommand(CommandContext ctx, DiscordMember member, string duration, string reason)
+#pragma warning restore CA1822
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.ModerateMembers))
+            if (!ctx.Member!.Permissions.HasPermission(Permissions.ModerateMembers))
             {
                 await ctx.Message.RespondAsync("You do not have permission to mute this user.");
                 return;
             }
+            // ReSharper disable once NotAccessedVariable
             var tDuration = duration;
-            string durationSuffix = "";
+            var durationSuffix = "";
             bool isHours = false, isMinutes = false, isSeconds = false;
             if (duration.EndsWith("h"))
             {
                 isHours = true;
                 duration = duration.Split("h")[0];
-                if (duration.Equals("1h"))
-                {
-                    durationSuffix = "hour";
-                }
-                else
-                {
-                    durationSuffix = "hours";
-                }
+                durationSuffix = duration.Equals("1h") ? "hour" : "hours";
             }
             else if (duration.EndsWith("m"))
             {
@@ -88,8 +91,9 @@ namespace CobwebBot.Commands
                 await ctx.RespondAsync("Invalid duration! See !help for more info!");
                 return;
             }
-            string EmbedDescription = "You have been muted in " + ctx.Guild.Name + "\n \n Reason: " + reason + "\n \n Duration: " + duration + " " + durationSuffix;
-            DiscordEmbed Embed = new DiscordEmbedBuilder().WithTitle("Muted!").WithDescription(EmbedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Yellow);
+            string embedDescription = "You have been muted in " + ctx.Guild.Name + "\n \n Reason: " + reason + "\n \n Duration: " + duration + " " + durationSuffix;
+            DiscordEmbed embed = new DiscordEmbedBuilder().WithTitle("Muted!").WithDescription(embedDescription).WithAuthor("Moderator: " + ctx.Message.Author.Username + "#" + ctx.Message.Author.Discriminator).WithColor(DiscordColor.Yellow);
+            // ReSharper disable once RedundantAssignment
             DateTimeOffset time = new DateTimeOffset(DateTime.Now.AddMinutes(5));
             if (isHours)
             {
@@ -106,11 +110,12 @@ namespace CobwebBot.Commands
             }
             else
             {
+                // ReSharper disable once RedundantAssignment
                 tDuration = "5m";
                 time = new DateTimeOffset(DateTime.Now.AddMinutes(5));
             }
 
-            await member.SendMessageAsync(Embed);
+            await member.SendMessageAsync(embed);
             await member.TimeoutAsync(time, reason);
             await ctx.Message.RespondAsync("Muted " + member.Mention + " for " + duration + " " + durationSuffix + "!");
         }
@@ -122,7 +127,7 @@ namespace CobwebBot.Commands
         [Command("purge"), Aliases("clear")]
         public async Task PurgeCommand(CommandContext ctx, int amountToDelete)
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageMessages))
+            if (!ctx.Member!.Permissions.HasPermission(Permissions.ManageMessages))
             {
                 await ctx.RespondAsync("You must have permissions to manage messages.");
                 return;
@@ -144,7 +149,12 @@ namespace CobwebBot.Commands
         [Command("purge")]
         public async Task PurgeCommand(CommandContext ctx, DiscordMember memberMessagesToPurge, int amountToDelete)
         {
-            if (!ctx.Member.Permissions.HasPermission(Permissions.ManageMessages))
+            if (memberMessagesToPurge == null)
+            {
+                await ctx.RespondAsync("Invalid User.");
+                return;
+            }
+            if (!ctx.Member!.Permissions.HasPermission(Permissions.ManageMessages))
             {
                 await ctx.RespondAsync("You must have permissions to manage messages.");
                 return;
@@ -163,12 +173,11 @@ namespace CobwebBot.Commands
             }
 
             var messagesGot = await ctx.Channel.GetMessagesAsync(limit: amountToDelete);
-            IReadOnlyList<DiscordMessage> messagesToDelete = null;
-            foreach (var msg in messagesGot)
-            {
-                if (msg.Author == memberMessagesToPurge)
-                    messagesToDelete.Append(msg);
-            }
+            IEnumerable<DiscordMessage> messagesToDelete = (await ctx.Channel.GetMessagesAsync(limit: amountToDelete))
+                .Where(msg 
+                    => msg.Author.Id 
+                       == memberMessagesToPurge.Id
+                       ).Take(amountToDelete);
 
             await ctx.Channel.DeleteMessagesAsync(messagesToDelete);
             Console.WriteLine($"[CobwebBot] Deleting {amountToDelete} messages from {ctx.Channel}, Command run by {ctx.Message.Author} | {ctx.Message.Author.Id}");

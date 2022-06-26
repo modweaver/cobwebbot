@@ -40,6 +40,14 @@ namespace CobwebBot.Commands
             `avatar` 
             Gets the avatar for a user. 
             Syntax: avatar [user]
+
+            `tag`
+            Gets a tag.
+            Syntax: tag <tag>
+            
+            `tags`
+            Gets a list of tags.
+            Syntax: tags
     
             `kick` (Admin Only) 
             Kicks a member. 

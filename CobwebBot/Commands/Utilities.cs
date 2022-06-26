@@ -8,12 +8,12 @@ namespace CobwebBot.Commands
 {
     public class Utilities : BaseCommandModule
     {
-        [Command("greet")]
-        public async Task GreetCommand(CommandContext ctx)
-        {
-            await ctx.RespondAsync("Greetings! I am Cobweb Bot");
-        }
+        #region Variables
+        #endregion
+        #region Commands
 
+        #region Avatar Commmand
+        #region Self
         [Command("avatar"),
          Description("Displays the avatar of the command runner or user mentioned with this command")]
         public async Task AvatarCommand(CommandContext ctx, DiscordMember mentionedUser)
@@ -22,13 +22,17 @@ namespace CobwebBot.Commands
                 ? mentionedUser.GetGuildAvatarUrl(ImageFormat.Auto, 512)
                 : ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
-
+        #endregion
+        #region Other User
         [Command("avatar"),
          Description("Displays the avatar of the command runner or user mentioned with this command")]
         public async Task AvatarCommand(CommandContext ctx)
         {
             await ctx.RespondAsync(ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
+        #endregion
+        #endregion
+        #region Help Command
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx)
         {
@@ -72,7 +76,8 @@ namespace CobwebBot.Commands
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands").WithColor(DiscordColor.Green);
             await ctx.RespondAsync(Embed);
         }
-
+        #endregion
+        #region Create Show Role Embed Command
         [Command("csre")]
         public async Task RoleEmbedCommand(CommandContext ctx)
         {
@@ -103,6 +108,8 @@ namespace CobwebBot.Commands
             });
             await builder.SendAsync(ctx.Message.Channel);
         }
+        #endregion
+        #region List Tags Command
         [Command("tags")]
         public async Task TagsCommand(CommandContext ctx)
         {
@@ -136,6 +143,8 @@ namespace CobwebBot.Commands
                 await ctx.Channel.SendMessageAsync(tag);
             }
         }
+        #endregion
+        #region Get Tag Command
         [Command("tag")]
         public async Task GetTagCommand(CommandContext ctx, string tag)
         {
@@ -176,8 +185,10 @@ namespace CobwebBot.Commands
                 }
             } else 
             {
-                await ctx.RespondAsync("Tag not found! i");
+                await ctx.RespondAsync("Tag not found!");
             }
         }
     }
+    #endregion
+    #endregion
 }

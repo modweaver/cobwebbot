@@ -98,87 +98,78 @@ namespace CobwebBot.Commands
         [Command("tags")]
         public async Task TagsCommand(CommandContext ctx)
         {
-            ulong tagsChannelId = 0;
-            if (ctx.Guild.Name == "Cobweb")
-            {
-                tagsChannelId = 985136865789218866;
-            }
-            else if (ctx.Guild.Name == "Bot testing")
-            {
-                tagsChannelId = 990351314707951677;
-            }
-            //var tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
-            DiscordChannel tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
+            DiscordChannel tagChannel = null;
             var Channels = await ctx.Guild.GetChannelsAsync();
-            foreach (var channel in Channels.ToList())
+            Channels = Channels.ToList();
+            foreach (var channel in Channels)
             {
-                if (channel.Id == tagsChannelId)
+                if (channel.Name == "tags")
                 {
-                    tagsChannel = channel;
+                    tagChannel = channel;
                 }
             }
-            var messagesList = await tagsChannel.GetMessagesAsync(100);
-            var tags = new string[messagesList.Count];
-            foreach (var message in messagesList)
+            if (tagChannel == null)
             {
-                tags = tags.ToArray();
-                var splitMessage = message.Content.ToLower().Split("id: ")[1].Split("\n")[0];
-                tags.Append(splitMessage);
-                await ctx.Channel.SendMessageAsync(splitMessage);
+                await ctx.RespondAsync("No tags channel found for this guild!");
+                return;
             }
 
+            var messagesList = await tagChannel.GetMessagesAsync();
+            string[] tags = new string[messagesList.Count];
+            var tagsList = tags.ToList();
+            var i = 0;
+            foreach (var message in messagesList) 
+            {
+                tagsList[i] = message.Content.Split("id: ")[1].Split("\n")[0];
+                i++;
+            }
+            foreach (var tag in tagsList) 
+            {
+                await ctx.Channel.SendMessageAsync(tag);
+            }
         }
         [Command("tag")]
         public async Task GetTagCommand(CommandContext ctx, string tag)
         {
-            ulong tagsChannelId = 0;
-            if (ctx.Guild.Name == "Cobweb")
-            {
-                tagsChannelId = 985136865789218866;
-            }
-            else if (ctx.Guild.Name == "Bot testing")
-            {
-                tagsChannelId = 990351314707951677;
-            }
-            DiscordChannel tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
+            DiscordChannel tagChannel = null;
             var Channels = await ctx.Guild.GetChannelsAsync();
-            foreach (var channel in Channels.ToList())
+            Channels = Channels.ToList();
+            foreach (var channel in Channels)
             {
-                if (channel.Id == tagsChannelId)
+                if (channel.Name == "tags")
                 {
-                    tagsChannel = channel;
+                    tagChannel = channel;
                 }
             }
-            var messagesList = await tagsChannel.GetMessagesAsync(100);
-            var tags = new string[messagesList.Count];
-            var tags_out = new string[messagesList.Count];
+            if (tagChannel == null)
+            {
+                await ctx.RespondAsync("No tags channel found for this guild!");
+                return;
+            }
+            var messagesList = await tagChannel.GetMessagesAsync();
+            string[] tags = new string[messagesList.Count];
+            var tagsList = tags.ToList();
+            var i = 0;
             foreach (var message in messagesList)
             {
-                var splitMessage = message.Content.Split("id: ")[1].Split("\n")[0];
-                tags.Append(splitMessage);
+                tagsList[i] = message.Content.Split("id: ")[1].Split("\n")[0];
+                i++;
             }
-
-            if (tags.Contains(tag))
+            if (tagsList.Contains(tag)) 
             {
-                foreach (var message in messagesList)
+                foreach (var message in messagesList) 
                 {
-                    if (message.Content.Contains(tag))
+                    var tagName = message.Content.Split("id: ")[1].Split("\n")[0];
+                    if (tagName == tag)
                     {
-                        var splitMessage = message.Content.Split($"id: {tag}")[1].Split("out: ")[1];
-                        await ctx.Channel.SendMessageAsync(splitMessage);
-
+                        var split = message.Content.Split($"id: ")[1].Split("\n")[1].Split("out: ")[1];
+                        await ctx.RespondAsync(split);
                     }
                 }
-            }
-            else
+            } else 
             {
-                await ctx.Message.RespondAsync("Tag not found!");
-                foreach (var tasg in tags)
-                {
-                    await ctx.Channel.SendMessageAsync(tasg);
-                }
+                await ctx.RespondAsync("Tag not found! i");
             }
-
         }
     }
 }

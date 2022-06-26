@@ -32,7 +32,7 @@ namespace CobwebBot.Commands
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx)
         {
-            string EmbedDescription = 
+            string EmbedDescription =
             @"
             `help`
             Shows this page.
@@ -94,6 +94,91 @@ namespace CobwebBot.Commands
                 new DiscordButtonComponent(ButtonStyle.Primary, "webcrawler_role_give", "Webcrawler")
             });
             await builder.SendAsync(ctx.Message.Channel);
+        }
+        [Command("tags")]
+        public async Task TagsCommand(CommandContext ctx)
+        {
+            ulong tagsChannelId = 0;
+            if (ctx.Guild.Name == "Cobweb")
+            {
+                tagsChannelId = 985136865789218866;
+            }
+            else if (ctx.Guild.Name == "Bot testing")
+            {
+                tagsChannelId = 990351314707951677;
+            }
+            //var tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
+            DiscordChannel tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
+            var Channels = await ctx.Guild.GetChannelsAsync();
+            foreach (var channel in Channels.ToList())
+            {
+                if (channel.Id == tagsChannelId)
+                {
+                    tagsChannel = channel;
+                }
+            }
+            var messagesList = await tagsChannel.GetMessagesAsync(100);
+            var tags = new string[messagesList.Count];
+            foreach (var message in messagesList)
+            {
+                tags = tags.ToArray();
+                var splitMessage = message.Content.ToLower().Split("id: ")[1].Split("\n")[0];
+                tags.Append(splitMessage);
+                await ctx.Channel.SendMessageAsync(splitMessage);
+            }
+
+        }
+        [Command("tag")]
+        public async Task GetTagCommand(CommandContext ctx, string tag)
+        {
+            ulong tagsChannelId = 0;
+            if (ctx.Guild.Name == "Cobweb")
+            {
+                tagsChannelId = 985136865789218866;
+            }
+            else if (ctx.Guild.Name == "Bot testing")
+            {
+                tagsChannelId = 990351314707951677;
+            }
+            DiscordChannel tagsChannel = ctx.Guild.GetChannel(tagsChannelId);
+            var Channels = await ctx.Guild.GetChannelsAsync();
+            foreach (var channel in Channels.ToList())
+            {
+                if (channel.Id == tagsChannelId)
+                {
+                    tagsChannel = channel;
+                }
+            }
+            var messagesList = await tagsChannel.GetMessagesAsync(100);
+            var tags = new string[messagesList.Count];
+            var tags_out = new string[messagesList.Count];
+            foreach (var message in messagesList)
+            {
+                var splitMessage = message.Content.Split("id: ")[1].Split("\n")[0];
+                tags.Append(splitMessage);
+            }
+
+            if (tags.Contains(tag))
+            {
+                foreach (var message in messagesList)
+                {
+                    if (message.Content.Contains(tag))
+                    {
+                        var splitMessage = message.Content.Split($"id: {tag}")[1].Split("out: ")[1];
+                        await ctx.Channel.SendMessageAsync(splitMessage);
+
+                    }
+                }
+            }
+            else
+            {
+                await ctx.Message.RespondAsync("Tag not found!");
+                foreach (var tasg in tags)
+                {
+                    await ctx.Channel.SendMessageAsync(tasg);
+                }
+            }
+
         }
     }
 }

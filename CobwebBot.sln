@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobwebbot", "Cobwebbot\Cobwebbot.csproj", "{86DD4405-A872-4038-B64D-48C177634D50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobwebBot", "CobwebBot\CobwebBot.csproj", "{86DD4405-A872-4038-B64D-48C177634D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

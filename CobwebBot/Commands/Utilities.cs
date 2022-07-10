@@ -3,17 +3,24 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using Emzi0767.Utilities;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace CobwebBot.Commands
 {
     public class Utilities : BaseCommandModule
     {
         #region Variables
+
         #endregion
+
         #region Commands
 
         #region Avatar Commmand
+
         #region Self
+
         [Command("avatar"),
          Description("Displays the avatar of the command runner or user mentioned with this command")]
         public async Task AvatarCommand(CommandContext ctx, DiscordMember mentionedUser)
@@ -22,22 +29,29 @@ namespace CobwebBot.Commands
                 ? mentionedUser.GetGuildAvatarUrl(ImageFormat.Auto, 512)
                 : ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
+
         #endregion
+
         #region Other User
+
         [Command("avatar"),
          Description("Displays the avatar of the command runner or user mentioned with this command")]
         public async Task AvatarCommand(CommandContext ctx)
         {
             await ctx.RespondAsync(ctx.Member.GetGuildAvatarUrl(ImageFormat.Auto, 512));
         }
+
         #endregion
+
         #endregion
+
         #region Help Command
+
         [Command("help"), Description("Shows a help page")]
         public async Task HelpCommand(CommandContext ctx)
         {
             string EmbedDescription =
-            @"
+                @"
             `help`
             Shows this page.
 
@@ -73,11 +87,15 @@ namespace CobwebBot.Commands
             Clear messages.
             Syntax: purge/clear [user] <amount of messages>
             ";
-            DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands").WithColor(DiscordColor.Green);
+            DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands")
+                .WithColor(DiscordColor.Green);
             await ctx.RespondAsync(Embed);
         }
+
         #endregion
+
         #region Create Show Role Embed Command
+
         [Command("csre")]
         public async Task RoleEmbedCommand(CommandContext ctx)
         {
@@ -85,6 +103,7 @@ namespace CobwebBot.Commands
             {
                 await ctx.Message.DeleteAsync();
             }
+
             string EmbedDescription = @"
             ModWeaver:
             Shows the channels for ModWeaver
@@ -108,8 +127,11 @@ namespace CobwebBot.Commands
             });
             await builder.SendAsync(ctx.Message.Channel);
         }
+
         #endregion
+
         #region List Tags Command
+
         [Command("tags")]
         public async Task TagsCommand(CommandContext ctx)
         {
@@ -123,6 +145,7 @@ namespace CobwebBot.Commands
                     tagChannel = channel;
                 }
             }
+
             if (tagChannel == null)
             {
                 await ctx.RespondAsync("No tags channel found for this guild!");
@@ -133,18 +156,22 @@ namespace CobwebBot.Commands
             string[] tags = new string[messagesList.Count];
             var tagsList = tags.ToList();
             var i = 0;
-            foreach (var message in messagesList) 
+            foreach (var message in messagesList)
             {
                 tagsList[i] = message.Content.Split("id: ")[1].Split("\n")[0];
                 i++;
             }
-            foreach (var tag in tagsList) 
+
+            foreach (var tag in tagsList)
             {
                 await ctx.Channel.SendMessageAsync(tag);
             }
         }
+
         #endregion
+
         #region Get Tag Command
+
         [Command("tag")]
         public async Task GetTagCommand(CommandContext ctx, string tag)
         {
@@ -158,11 +185,13 @@ namespace CobwebBot.Commands
                     tagChannel = channel;
                 }
             }
+
             if (tagChannel == null)
             {
                 await ctx.RespondAsync("No tags channel found for this guild!");
                 return;
             }
+
             var messagesList = await tagChannel.GetMessagesAsync();
             string[] tags = new string[messagesList.Count];
             var tagsList = tags.ToList();
@@ -172,9 +201,10 @@ namespace CobwebBot.Commands
                 tagsList[i] = message.Content.Split("id: ")[1].Split("\n")[0];
                 i++;
             }
-            if (tagsList.Contains(tag)) 
+
+            if (tagsList.Contains(tag))
             {
-                foreach (var message in messagesList) 
+                foreach (var message in messagesList)
                 {
                     var tagName = message.Content.Split("id: ")[1].Split("\n")[0];
                     if (tagName == tag)
@@ -183,12 +213,46 @@ namespace CobwebBot.Commands
                         await ctx.RespondAsync(split);
                     }
                 }
-            } else 
+            }
+            else
             {
                 await ctx.RespondAsync("Tag not found!");
             }
         }
+
+        #endregion
+
+        #region Search ModWeaver Command
+
+        [Command("modweaver")]
+        public async Task SearchMWCommand(CommandContext ctx, string query)
+        {
+            using var client = new HttpClient();
+            var result = await client.GetAsync("http://api.modweaver.org/api/list_projects");
+            var json = JArray.Parse(await result.Content.ReadAsStringAsync());
+            foreach (var item in json.ToArray())
+            {
+                var h = item.ToString();
+                if (h.Contains(query))
+                {
+                    var next_result = await client.GetAsync($"http://api.modweaver.org/api/project/{h}");
+                    var next_json = JObject.Parse(await next_result.Content.ReadAsStringAsync());
+                    var embed = new DiscordEmbedBuilder().WithTitle(next_json.GetValue("name").ToString()).WithDescription(next_json.GetValue("description").ToString()).WithAuthor(next_json.GetValue("author").ToString());
+                    if (next_json.GetValue("icon_url").ToString() != String.Empty)
+                    {
+                        var thumb = new DiscordEmbedBuilder.EmbedThumbnail();
+                        thumb.Url = next_json.GetValue("icon_url").ToString();
+                        embed.Thumbnail = thumb;
+                    }
+                    
+
+                    await ctx.RespondAsync(embed);
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
-    #endregion
-    #endregion
 }

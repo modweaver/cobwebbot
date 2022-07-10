@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.EventArgs;
@@ -55,12 +56,14 @@ namespace CobwebBot.Handlers
                 }
                 if (!found) 
                 {
+                    Thread.Sleep(1200);
                     var smessage = await channel.SendMessageAsync(formatMessage);
                     await smessage.PinAsync();
                 }
                 if (i == 0)
                 {
-                    await channel.CreateThreadAsync(e.Message, name, AutoArchiveDuration.Day);
+                    var lastMessage = await e.Channel.GetMessageAsync(id: (ulong)e.Channel.LastMessageId);
+                    await channel.CreateThreadAsync(lastMessage, name, AutoArchiveDuration.Day);
                 }
                 i = 1;
                 test = false;

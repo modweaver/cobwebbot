@@ -66,6 +66,10 @@ namespace CobwebBot.Commands
             `tags`
             Gets a list of tags.
             Syntax: tags
+            
+            `modweaver`
+            Searches ModWeaver for a mod.
+            Syntax: modweaver <query>
     
             `kick` (Admin Only) 
             Kicks a member. 
@@ -86,6 +90,8 @@ namespace CobwebBot.Commands
             `purge`/`clear` (Admin Only)
             Clear messages.
             Syntax: purge/clear [user] <amount of messages>
+            
+            
             ";
             DiscordEmbed Embed = new DiscordEmbedBuilder().WithDescription(EmbedDescription).WithTitle("Commands")
                 .WithColor(DiscordColor.Green);

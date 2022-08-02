@@ -55,7 +55,7 @@ public sealed class CommandExecutor
         Console.WriteLine(fullCommand);
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
-        arguments = eventArgs.Message.Content.Split(" ")[1];
+        //arguments = eventArgs.Message.Content.Split(" ")[1];
         
 
         // Throw command not found exception
@@ -65,7 +65,7 @@ public sealed class CommandExecutor
         }
 
         // Off with his head! (Execute the command)
-        return commandsNext.ExecuteCommandAsync(commandsNext.CreateContext(eventArgs.Message, client.CurrentUser.Mention, command, arguments));
+        return commandsNext.ExecuteCommandAsync(commandsNext.CreateContext(eventArgs.Message, client.CurrentUser.Mention, command, eventArgs.Message.Content.Split(" ")[1]));
     }
 }
 

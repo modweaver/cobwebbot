@@ -41,8 +41,15 @@ public sealed class CommandExecutor
         {
             print = print.Append(thing.ToString()).ToArray();
         }
-        System.Console.WriteLine(print + "b");
 
+        string thingd = "[";
+        foreach (var b in print)
+        {
+            thingd += "\"" + b + "\",";
+        }
+
+        thingd += "]";
+        System.Console.WriteLine(thingd);
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content[client.CurrentUser.Mention.Length..].Trim();
 

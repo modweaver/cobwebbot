@@ -36,14 +36,14 @@ public sealed class CommandExecutor
 
         // Grab CNext
         CommandsNextExtension commandsNext = client.GetCommandsNext();
-        
+        System.Console.WriteLine(commandsNext.RegisteredCommands + "b");
 
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content[client.CurrentUser.Mention.Length..].Trim();
 
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
-        System.Console.WriteLine(commandsNext.RegisteredCommands + "b");
+        
 
         // Throw command not found exception
         if (command == null)

@@ -36,7 +36,12 @@ public sealed class CommandExecutor
 
         // Grab CNext
         CommandsNextExtension commandsNext = client.GetCommandsNext();
-        System.Console.WriteLine(commandsNext.RegisteredCommands + "b");
+        string[] print = new[] { "" };
+        foreach (var thing in commandsNext.RegisteredCommands)
+        {
+            print = print.Append(thing.ToString()).ToArray();
+        }
+        System.Console.WriteLine("".Join() + "b");
 
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content[client.CurrentUser.Mention.Length..].Trim();

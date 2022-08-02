@@ -36,7 +36,7 @@ public sealed class CommandExecutor
 
         // Grab CNext
         CommandsNextExtension commandsNext = client.GetCommandsNext();
-        commandsNext.RegisterCommands<Moderation>();
+        //commandsNext.RegisterCommands<Moderation>();
         commandsNext.RegisterCommands<Utilities>();
 
         // Remove the mention...

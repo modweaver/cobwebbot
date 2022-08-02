@@ -56,7 +56,7 @@ public sealed class CommandExecutor
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
         //arguments = eventArgs.Message.Content.Split(" ")[1];
-        if (eventArgs.Message.Content.Split(" ").Length == 0)
+        if (eventArgs.Message.Content.Split(" ").Length > 0)
         {
             arguments = "";
         }

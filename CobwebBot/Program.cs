@@ -18,6 +18,7 @@ namespace CobwebBot
         private static bool devMode = true;
         private static string _buildLoc = Path.Combine(Directory.GetCurrentDirectory() + "./bin/Debug/net6.0/");
         private static string? token;
+        public static string[] prefixes = new[] { "!" };
         static void Main(string[] args)
         {
 

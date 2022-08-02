@@ -17,7 +17,19 @@ public sealed class CommandExecutor
     {
         System.Console.WriteLine("h");
         // If the message doesn't start with a bot ping, ignore it.
-        if (!eventArgs.Message.Content.StartsWith(client.CurrentUser.Mention, false, CultureInfo.InvariantCulture))
+        bool val1 = !eventArgs.Message.Content.StartsWith(client.CurrentUser.Mention, false,
+            CultureInfo.InvariantCulture);
+        bool val2 = true;
+        
+        foreach (var prefix in Program.prefixes)
+        {
+            if (eventArgs.Message.Content.StartsWith(prefix))
+            {
+                val2 = false;
+            }
+        }
+
+        if (val1 && val2)
         {
             return Task.CompletedTask;
         }

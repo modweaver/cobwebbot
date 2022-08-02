@@ -51,7 +51,7 @@ public sealed class CommandExecutor
         thingd += "]";
         System.Console.WriteLine(thingd);
         // Remove the mention...
-        string fullCommand = eventArgs.Message.Content[client.CurrentUser.Mention.Length..].Trim();
+        string fullCommand = eventArgs.Message.Content.Split(" ")[0].Split("!")[1];
 
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);

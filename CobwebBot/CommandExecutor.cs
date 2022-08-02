@@ -36,23 +36,10 @@ public sealed class CommandExecutor
 
         // Grab CNext
         CommandsNextExtension commandsNext = client.GetCommandsNext();
-        string[] print = new[] { "" };
-        foreach (var thing in commandsNext.RegisteredCommands)
-        {
-            print = print.Append(thing.ToString()).ToArray();
-        }
 
-        string thingd = "[";
-        foreach (var b in print)
-        {
-            thingd += "\"" + b + "\",";
-        }
-
-        thingd += "]";
-        System.Console.WriteLine(thingd);
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content.Split(" ")[0].Split("!")[1];
-        Console.WriteLine(fullCommand);
+        
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
         //arguments = eventArgs.Message.Content.Split(" ")[1];

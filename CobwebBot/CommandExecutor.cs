@@ -55,6 +55,7 @@ public sealed class CommandExecutor
         Console.WriteLine(fullCommand);
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
+        arguments = eventArgs.Message.Content.Split(" ")[1];
         
 
         // Throw command not found exception

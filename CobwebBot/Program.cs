@@ -45,7 +45,7 @@ namespace CobwebBot
             });
             discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
 
-           /* var commands = discord.UseCommandsNext(new CommandsNextConfiguration
+            /*var commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 CaseSensitive = false,
                 EnableDefaultHelp = false,
@@ -72,6 +72,7 @@ namespace CobwebBot
                 return Task.CompletedTask;
             };
             var commands = discord.GetCommandsNext();
+            commands.RegisterCommands();
             commands.RegisterCommands<Commands.Utilities>();
             commands.RegisterCommands<Commands.Moderation>();
             await discord.ConnectAsync();

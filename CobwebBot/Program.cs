@@ -44,8 +44,9 @@ namespace CobwebBot
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
             var commands = discord.GetCommandsNext();
-            commands.RegisterCommands<Commands.Utilities>();
-            commands.RegisterCommands<Commands.Moderation>();
+            commands.RegisterCommands(typeof(Program).Assembly);
+            //commands.RegisterCommands<Commands.Utilities>();
+            //commands.RegisterCommands<Commands.Moderation>();
             discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
 
             /*var commands = discord.UseCommandsNext(new CommandsNextConfiguration

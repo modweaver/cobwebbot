@@ -71,8 +71,9 @@ namespace CobwebBot
                 InteractionHandler.Handle(s, e);
                 return Task.CompletedTask;
             };
-           // commands.RegisterCommands<Commands.Utilities>();
-           // commands.RegisterCommands<Commands.Moderation>();
+            var commands = discord.GetCommandsNext();
+            commands.RegisterCommands<Commands.Utilities>();
+            commands.RegisterCommands<Commands.Moderation>();
             await discord.ConnectAsync();
             await Task.Delay(-1);
         }

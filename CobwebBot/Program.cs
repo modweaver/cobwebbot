@@ -42,15 +42,15 @@ namespace CobwebBot
                 MinimumLogLevel = LogLevel.Debug,
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
-            
+            discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
 
-            var commands = discord.UseCommandsNext(new CommandsNextConfiguration
+           /* var commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 CaseSensitive = false,
                 EnableDefaultHelp = false,
                 EnableMentionPrefix = true,
                 StringPrefixes = new[] { cfgjson.PREFIX }
-            });
+            });*/
 
 
             discord.MessageCreated += async (s, e) =>
@@ -70,8 +70,8 @@ namespace CobwebBot
                 InteractionHandler.Handle(s, e);
                 return Task.CompletedTask;
             };
-            commands.RegisterCommands<Commands.Utilities>();
-            commands.RegisterCommands<Commands.Moderation>();
+           // commands.RegisterCommands<Commands.Utilities>();
+           // commands.RegisterCommands<Commands.Moderation>();
             await discord.ConnectAsync();
             await Task.Delay(-1);
         }

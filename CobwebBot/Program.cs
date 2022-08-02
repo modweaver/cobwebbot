@@ -50,13 +50,14 @@ namespace CobwebBot
             //commands.RegisterCommands<Commands.Moderation>();
             discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
 
-            var commands = discord.UseCommandsNext(new CommandsNextConfiguration
+           /* var commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 CaseSensitive = false,
                 EnableDefaultHelp = false,
                 EnableMentionPrefix = true,
                 StringPrefixes = new[] { cfgjson.PREFIX }
-            });
+            });*/
+           var commands = discord.GetCommandsNext();
             commands.RegisterCommands(typeof(Program).Assembly);
 
 

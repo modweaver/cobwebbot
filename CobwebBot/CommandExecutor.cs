@@ -15,6 +15,7 @@ public sealed class CommandExecutor
     /// </summary>
     public Task MessageCreatedAsync(DiscordClient client, MessageCreateEventArgs eventArgs)
     {
+        System.Console.WriteLine("h");
         // If the message doesn't start with a bot ping, ignore it.
         if (!eventArgs.Message.Content.StartsWith(client.CurrentUser.Mention, false, CultureInfo.InvariantCulture))
         {

@@ -43,19 +43,21 @@ namespace CobwebBot
                 MinimumLogLevel = LogLevel.Debug,
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
-            var commands = discord.GetCommandsNext();
-            commands.RegisterCommands(typeof(Program).Assembly);
+            
+            
+            
             //commands.RegisterCommands<Commands.Utilities>();
             //commands.RegisterCommands<Commands.Moderation>();
             discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
 
-            /*var commands = discord.UseCommandsNext(new CommandsNextConfiguration
+            var commands = discord.UseCommandsNext(new CommandsNextConfiguration
             {
                 CaseSensitive = false,
                 EnableDefaultHelp = false,
                 EnableMentionPrefix = true,
                 StringPrefixes = new[] { cfgjson.PREFIX }
-            });*/
+            });
+            commands.RegisterCommands(typeof(Program).Assembly);
 
 
             discord.MessageCreated += async (s, e) =>

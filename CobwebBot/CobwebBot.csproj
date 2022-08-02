@@ -15,12 +15,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="NewFolder\" />
       <Folder Include="Utils" />
     </ItemGroup>
 
     <ItemGroup>
       <None Include="bin\Debug\net6.0\config.json" />
+      <None Remove="NewFolder\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="NewFolder\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="NewFolder\**" />
     </ItemGroup>
 
 </Project>

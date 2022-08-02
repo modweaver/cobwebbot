@@ -43,7 +43,7 @@ public sealed class CommandExecutor
 
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
-        System.Console.WriteLine(commandsNext.RegisteredCommands);
+        System.Console.WriteLine(commandsNext.RegisteredCommands + "b");
 
         // Throw command not found exception
         if (command == null)

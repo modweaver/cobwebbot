@@ -41,7 +41,7 @@ public sealed class CommandExecutor
         {
             print = print.Append(thing.ToString()).ToArray();
         }
-        System.Console.WriteLine("".Join() + "b");
+        System.Console.WriteLine(print + "b");
 
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content[client.CurrentUser.Mention.Length..].Trim();

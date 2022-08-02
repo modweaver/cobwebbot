@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -233,17 +235,27 @@ namespace CobwebBot.Commands
         [Command("modweaver")]
         public async Task SearchMWCommand(CommandContext ctx, string query)
         {
-            using var client = new HttpClient();
-            var result = await client.GetAsync("http://api.modweaver.org/api/list_projects");
-            var json = JArray.Parse(await result.Content.ReadAsStringAsync());
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Clear();
+            var res = await client.GetAsync(string.Format("http://api.modweaver.org/projects"));
+            var json = JArray.Parse(await res.Content.ReadAsStringAsync());
             foreach (var item in json.ToArray())
             {
                 var h = item.ToString();
                 if (h.Contains(query))
                 {
-                    var next_result = await client.GetAsync($"http://api.modweaver.org/api/project/{h}");
+                    var next_result = await client.GetAsync($"http://api.modweaver.org/project/{h}");
                     var next_json = JObject.Parse(await next_result.Content.ReadAsStringAsync());
-                    var embed = new DiscordEmbedBuilder().WithTitle(next_json.GetValue("name").ToString()).WithDescription(next_json.GetValue("description").ToString()).WithAuthor(next_json.GetValue("author").ToString());
+                    var embed_description = 
+                    $@"
+                        {next_json.GetValue("description").ToString()}
+
+                        *Downloads URLs not available at this time*
+                    ";
+                    var embed = new DiscordEmbedBuilder()
+                        .WithTitle(next_json.GetValue("name").ToString())
+                        .WithDescription(embed_description)
+                        .WithAuthor(next_json.GetValue("author").ToString());
                     if (next_json.GetValue("icon_url").ToString() != String.Empty)
                     {
                         var thumb = new DiscordEmbedBuilder.EmbedThumbnail();

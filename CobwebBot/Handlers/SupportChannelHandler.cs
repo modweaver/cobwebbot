@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.EventArgs;
 using DSharpPlus;
+using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
+using DSharpPlus.Exceptions;
 
 namespace CobwebBot.Handlers
 {
@@ -18,7 +20,18 @@ namespace CobwebBot.Handlers
             var found = false;
             var messageContent = e.Message.Content;
             var userId = e.Message.Author.Id;
-            var member = await e.Guild.GetMemberAsync(userId);
+            DiscordMember member = null;
+            bool tg = false;
+            try
+            {
+                member = await e.Guild.GetMemberAsync(userId);
+                tg = false;
+            } 
+            catch (NotFoundException err)
+            {
+                tg = true;
+            }
+
             var i = 0;
             if (e.Message.Author == s.CurrentUser)
             {
@@ -26,7 +39,10 @@ namespace CobwebBot.Handlers
             }
             if (messageContent.Split("Title: ").Length < 2)
             {
-                await member.SendMessageAsync("Please use the requested format for your message!");
+                if (!tg)
+                {
+                    await member.SendMessageAsync("Please use the requested format for your message!");
+                }
                 await e.Message.DeleteAsync();
                 return;
             }

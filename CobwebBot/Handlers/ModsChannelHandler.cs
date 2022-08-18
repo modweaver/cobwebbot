@@ -1,4 +1,5 @@
 using DSharpPlus;
+using DSharpPlus.EventArgs;
 
 namespace CobwebBot.Handlers
 {

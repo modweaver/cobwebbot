@@ -20,14 +20,14 @@ namespace CobwebBot.Handlers
             var found = false;
             var messageContent = e.Message.Content;
             var userId = e.Message.Author.Id;
-            DiscordMember member = null;
+            DiscordMember? member = null;
             bool tg = false;
             try
             {
                 member = await e.Guild.GetMemberAsync(userId);
                 tg = false;
-            } 
-            catch (NotFoundException err)
+            }
+            catch (NotFoundException)
             {
                 tg = true;
             }
@@ -62,7 +62,7 @@ namespace CobwebBot.Handlers
                         found = true;
                         await message.DeleteAsync();
                         if (!test)
-                        { 
+                        {
                             var smessage = await channel.SendMessageAsync(formatMessage);
                             await smessage.PinAsync();
                             test = true;
@@ -70,7 +70,7 @@ namespace CobwebBot.Handlers
                         }
                     }
                 }
-                if (!found) 
+                if (!found)
                 {
                     Thread.Sleep(1200);
                     var smessage = await channel.SendMessageAsync(formatMessage);

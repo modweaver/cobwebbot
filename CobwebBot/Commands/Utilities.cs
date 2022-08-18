@@ -143,7 +143,7 @@ namespace CobwebBot.Commands
         [Command("tags")]
         public async Task TagsCommand(CommandContext ctx)
         {
-            DiscordChannel tagChannel = null;
+            DiscordChannel? tagChannel = null;
             var Channels = await ctx.Guild.GetChannelsAsync();
             Channels = Channels.ToList();
             foreach (var channel in Channels)
@@ -183,7 +183,7 @@ namespace CobwebBot.Commands
         [Command("tag")]
         public async Task GetTagCommand(CommandContext ctx, string tag)
         {
-            DiscordChannel tagChannel = null;
+            DiscordChannel? tagChannel = null;
             var Channels = await ctx.Guild.GetChannelsAsync();
             Channels = Channels.ToList();
             foreach (var channel in Channels)
@@ -246,7 +246,7 @@ namespace CobwebBot.Commands
                 {
                     var next_result = await client.GetAsync($"http://api.modweaver.org/project/{h}");
                     var next_json = JObject.Parse(await next_result.Content.ReadAsStringAsync());
-                    var embed_description = 
+                    var embed_description =
                     $@"
                         {next_json.GetValue("description").ToString()}
 
@@ -262,7 +262,7 @@ namespace CobwebBot.Commands
                         thumb.Url = next_json.GetValue("icon_url").ToString();
                         embed.Thumbnail = thumb;
                     }
-                    
+
 
                     await ctx.RespondAsync(embed);
                 }

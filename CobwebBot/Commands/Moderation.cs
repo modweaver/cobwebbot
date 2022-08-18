@@ -11,7 +11,7 @@ namespace CobwebBot.Commands
 
         #endregion
         #region COMMANDS
-        
+
         #region BAN COMMAND
         [Command("ban")]
         // ReSharper disable once UnusedMember.Global
@@ -31,7 +31,7 @@ namespace CobwebBot.Commands
             await ctx.RespondAsync("Banned user " + member.Mention);
         }
         #endregion
-        
+
         #region KICK COMMAND
         [Command("kick")]
         // ReSharper disable once UnusedMember.Global
@@ -51,7 +51,7 @@ namespace CobwebBot.Commands
             await ctx.RespondAsync("Kicked user " + member.Mention);
         }
         #endregion
-        
+
         #region MUTE COMMAND
         [Command("mute")]
         // ReSharper disable once UnusedMember.Global
@@ -119,9 +119,9 @@ namespace CobwebBot.Commands
             await member.TimeoutAsync(time, reason);
             await ctx.Message.RespondAsync("Muted " + member.Mention + " for " + duration + " " + durationSuffix + "!");
         }
-        
+
         #endregion
-        
+
         #region PURGE COMMAND
 
         [Command("purge"), Aliases("clear")]
@@ -174,8 +174,8 @@ namespace CobwebBot.Commands
 
             var messagesGot = await ctx.Channel.GetMessagesAsync(limit: amountToDelete);
             IEnumerable<DiscordMessage> messagesToDelete = (await ctx.Channel.GetMessagesAsync(limit: amountToDelete))
-                .Where(msg 
-                    => msg.Author.Id 
+                .Where(msg
+                    => msg.Author.Id
                        == memberMessagesToPurge.Id
                        ).Take(amountToDelete);
 
@@ -184,7 +184,7 @@ namespace CobwebBot.Commands
         }
 
         #endregion
-        
+
         #endregion
     }
 }

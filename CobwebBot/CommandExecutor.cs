@@ -18,7 +18,7 @@ public sealed class CommandExecutor
         bool val1 = !eventArgs.Message.Content.StartsWith(client.CurrentUser.Mention, false,
             CultureInfo.InvariantCulture);
         bool val2 = true;
-        
+
         foreach (var prefix in Program.prefixes)
         {
             if (eventArgs.Message.Content.StartsWith(prefix))
@@ -37,7 +37,7 @@ public sealed class CommandExecutor
 
         // Remove the mention...
         string fullCommand = eventArgs.Message.Content.Split(" ")[0].Split("!")[1];
-        
+
         // See if the message is an actual command...
         Command? command = commandsNext.FindCommand(fullCommand, out string? arguments);
         //arguments = eventArgs.Message.Content.Split(" ")[1];

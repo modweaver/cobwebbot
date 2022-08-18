@@ -14,7 +14,7 @@ namespace CobwebBot
 {
     class Program
     {
-        public static DefaultLogger Logger;
+        public static DefaultLogger? Logger;
         private static bool devMode = true;
         private static string _buildLoc = Path.Combine(Directory.GetCurrentDirectory() + "./bin/Debug/net6.0/");
         private static string? token;
@@ -43,9 +43,9 @@ namespace CobwebBot
                 MinimumLogLevel = LogLevel.Debug,
                 LogTimestampFormat = "MM DD -- hh:mm:ss tt"
             });
-            
-            
-            
+
+
+
             //commands.RegisterCommands<Commands.Utilities>();
             //commands.RegisterCommands<Commands.Moderation>();
             discord.MessageCreated += new CommandExecutor().MessageCreatedAsync;
@@ -58,7 +58,7 @@ namespace CobwebBot
                 StringPrefixes = new[] { cfgjson.PREFIX },
                 UseDefaultCommandHandler = false
             });
-           
+
             commands.RegisterCommands(typeof(Program).Assembly);
 
 
@@ -79,7 +79,7 @@ namespace CobwebBot
                 InteractionHandler.Handle(s, e);
                 return Task.CompletedTask;
             };
-            
+
             await discord.ConnectAsync();
             await Task.Delay(-1);
         }

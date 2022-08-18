@@ -71,6 +71,9 @@ namespace CobwebBot
                 if (e.Message.Channel.Name == "support")
                 {
                     SupportChannelHandler.Handle(s, e);
+                } else if (e.Message.Channel.Name == "mods")
+                {
+                    ModsChannelHandler.Handle(s, e);
                 }
             };
 

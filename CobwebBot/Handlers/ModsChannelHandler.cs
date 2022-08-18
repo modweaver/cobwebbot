@@ -1,3 +1,5 @@
+using DSharpPlus;
+
 namespace CobwebBot.Handlers
 {
     internal class ModsChannelHandler

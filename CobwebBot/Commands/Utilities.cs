@@ -270,6 +270,31 @@ namespace CobwebBot.Commands
         }
 
         #endregion
+        
+        #region Server Info Command
+        [Command("server")]
+        public async Task ServerInfoCommand(CommandContext ctx)
+        {
+            var guild = ctx.Guild;
+            var members = guild.MemberCount;
+            var embed = new DiscordEmbedBuilder();
+            var members_ = guild.Members;
+            Dictionary<ulong, DiscordMember?> new_members = new Dictionary<ulong, DiscordMember?>();
+            foreach (var member in members_)
+            {
+                if (!member.Value.IsBot)
+                {
+                    new_members.Add(member.Key, member.Value);
+                }
+            }
+            embed.Title = guild.Name;
+            embed.AddField("Server ID", guild.Id.ToString(), true);
+            embed.AddField("Owner", guild.Owner.DisplayName, true);
+            embed.AddField("Members (with bots)", members.ToString());
+            embed.AddField("Members (without bots)", new_members.Count.ToString(), true);
+            await ctx.RespondAsync("", embed);
+        }
+        #endregion
 
         #endregion
     }

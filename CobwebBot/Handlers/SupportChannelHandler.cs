@@ -37,12 +37,14 @@ namespace CobwebBot.Handlers
             {
                 return;
             }
+
             if (messageContent.Split("Title: ").Length < 2)
             {
                 if (!tg)
                 {
                     await member.SendMessageAsync("Please use the requested format for your message!");
                 }
+
                 await e.Message.DeleteAsync();
                 return;
             }
@@ -70,20 +72,21 @@ namespace CobwebBot.Handlers
                         }
                     }
                 }
+
                 if (!found)
                 {
                     Thread.Sleep(1200);
                     var smessage = await channel.SendMessageAsync(formatMessage);
                     await smessage.PinAsync();
                 }
+
                 if (i == 0)
                 {
                     var lastMessage = await e.Channel.GetMessageAsync(id: (ulong)e.Channel.LastMessageId);
-                    await channel.CreateThreadAsync(lastMessage, name, AutoArchiveDuration.Day);
+                    var thread = await channel.CreateThreadAsync(lastMessage, name, AutoArchiveDuration.Day);
+                    var message = await thread.SendMessageAsync("Hang on, let me grab the admins...");
+                    await message.ModifyAsync($"<@&966075968647209060> \nWelcome to your new thread {member.Mention}! \nI've grabbed the moderators so they can make sure nothing bad can happen in this thread. Someone should be around to help you soon :)");
                 }
-                i = 1;
-                test = false;
-
             }
         }
     }

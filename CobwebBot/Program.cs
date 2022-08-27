@@ -87,6 +87,11 @@ namespace CobwebBot
                 GuildMemberAddedHandler.Handle(s, e);
                 return Task.CompletedTask;
             };
+            discord.GuildMemberRemoved += (s, e) =>
+            {
+                GuildMemberRemovedHandler.Handle(s, e);
+                return Task.CompletedTask;
+            };
 
             await discord.ConnectAsync();
             await Task.Delay(-1);

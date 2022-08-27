@@ -4,10 +4,10 @@ using DSharpPlus.EventArgs;
 
 namespace CobwebBot.Handlers;
 
-public class GuildMemberAddedHandler
+public class GuildMemberRemovedHandler
 {
 
-    public async static void Handle(DiscordClient s, GuildMemberAddEventArgs e)
+    public async static void Handle(DiscordClient s, GuildMemberRemoveEventArgs e)
     {
         var channel = e.Guild.GetChannel(1013164525832392804);
         var members_ = e.Guild.Members;
@@ -21,6 +21,6 @@ public class GuildMemberAddedHandler
         }
         
         await channel.SendMessageAsync(
-            $"Welcome {e.Member.Mention}, you're member #{new_members.Count}! If you're here to download mods, visit <#966085042621251614> - this channel is for posting mods you have made and downloading from. Or you can visit https://modweaver.org, a site created by us. If you need help with anything, feel free to post a message in <#980789224217403422>");
+            $"{e.Member.DisplayName} has left the server. The server is now at {new_members.Count} members");
     }
 }

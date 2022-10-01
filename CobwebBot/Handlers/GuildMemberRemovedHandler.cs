@@ -9,6 +9,10 @@ public class GuildMemberRemovedHandler
 
     public async static void Handle(DiscordClient s, GuildMemberRemoveEventArgs e)
     {
+        if (e.Member.IsBot)
+        {
+            return;
+        }
         var channel = e.Guild.GetChannel(1013164525832392804);
         var members_ = e.Guild.Members;
         Dictionary<ulong, DiscordMember?> new_members = new();

@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Utils" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="bin\Debug\net6.0\config.json" />
       <None Remove="NewFolder\**" />
     </ItemGroup>

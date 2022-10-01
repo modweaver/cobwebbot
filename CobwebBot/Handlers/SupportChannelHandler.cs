@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.EventArgs;
+﻿using DSharpPlus.EventArgs;
 using DSharpPlus;
-using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
 
@@ -55,9 +48,9 @@ namespace CobwebBot.Handlers
                 var channel = e.Message.Channel;
                 var name = "[" + username + "] " + title;
                 var formatMessage = "Please use this format for your message:\nTitle:\nDescription:";
-                var messages_list = await channel.GetMessagesAsync(100);
-                messages_list = messages_list.ToList();
-                foreach (var message in messages_list)
+                var messagesList = await channel.GetMessagesAsync(100);
+                messagesList = messagesList.ToList();
+                foreach (var message in messagesList)
                 {
                     if (message.Author == s.CurrentUser)
                     {
@@ -75,15 +68,13 @@ namespace CobwebBot.Handlers
 
                 if (!found)
                 {
-                    Thread.Sleep(1200);
                     var smessage = await channel.SendMessageAsync(formatMessage);
                     await smessage.PinAsync();
                 }
 
                 if (i == 0)
                 {
-                    var lastMessage = await e.Channel.GetMessageAsync(id: (ulong)e.Channel.LastMessageId);
-                    var thread = await channel.CreateThreadAsync(lastMessage, name, AutoArchiveDuration.Day);
+                    var thread = await channel.CreateThreadAsync(e.Message, name, AutoArchiveDuration.Day);
                     var message = await thread.SendMessageAsync("Hang on, let me grab the admins...");
                     await message.ModifyAsync($"<@&966075968647209060> \nWelcome to your new thread {member.Mention}! \nI've grabbed the moderators so they can make sure nothing bad can happen in this thread. Someone should be around to help you soon :)");
                 }
